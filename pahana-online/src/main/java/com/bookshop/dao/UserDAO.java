@@ -2,8 +2,7 @@ package com.bookshop.dao;
 
 import com.bookshop.model.UserModel;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+
 
 public class UserDAO {
 
@@ -115,7 +114,7 @@ public class UserDAO {
 
             if (rs.next()) {
                 return new UserModel(
-                        rs.getInt("user_id"),
+                        rs.getInt("userId"),
                         rs.getString("username"),
                         rs.getString("password"),
                         rs.getString("role")

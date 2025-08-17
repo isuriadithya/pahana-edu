@@ -21,7 +21,7 @@ public class AuthController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("WEB-INF/view/login.jsp").forward(request, response);
+        request.getRequestDispatcher("index.jsp").forward(request, response);
     }
 
     @Override
@@ -30,6 +30,9 @@ public class AuthController extends HttpServlet {
         
         String username = request.getParameter("username");
         String password = request.getParameter("password");
+        
+        System.out.println(username);
+        System.out.println(password);
 
         // authenticate user
         if (userService.authenticate(username, password)) {
@@ -37,17 +40,13 @@ public class AuthController extends HttpServlet {
             UserModel user = userService.getUser(username);
 
             HttpSession session = request.getSession();
-            session.setAttribute("loggedUser", user); // stores entire UserModel object
+            session.setAttribute("username", user); // stores entire UserModel object
 
-            // redirect based on role
-            if ("admin".equalsIgnoreCase(user.getRole())) {
-                response.sendRedirect("customer?action=list");
-            } else {
-                response.sendRedirect("billing");
-            }
+                response.sendRedirect("view/dashboard/dashboard.jsp");
+           
         } else {
             request.setAttribute("errorMessage", "Invalid username or password");
-            request.getRequestDispatcher("WEB-INF/view/login.jsp").forward(request, response);
+            request.getRequestDispatcher("index.jsp").forward(request, response);
         }
     }
 }
