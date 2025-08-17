@@ -61,9 +61,4 @@ public class Item {
 	    public void setQuantity(int quantity) {
 	        this.quantity = quantity;
 	    }
-
-	    // Method to calculate total value of this item in stock
-	    public double getTotalValue() {
-	        return price * quantity;
-	    }
 }

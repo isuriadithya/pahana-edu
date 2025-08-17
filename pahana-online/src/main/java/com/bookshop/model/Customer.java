@@ -71,10 +71,4 @@ public class Customer {
         this.billAmount = billAmount;
     }
 
-    // Method to calculate bill based on units
-    public void calculateBill(double ratePerUnit) {
-        this.billAmount = unitsConsumed * ratePerUnit;
-    }
-
-
 }

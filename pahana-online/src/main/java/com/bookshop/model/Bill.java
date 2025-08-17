@@ -50,7 +50,6 @@ public class Bill {
 
     public void setItems(List<Item> items) {
         this.items = items;
-        calculateTotal();
     }
 
     public double getTotalAmount() {
@@ -63,36 +62,6 @@ public class Bill {
 
     public void setDate(String date) {
         this.date = date;
-    }
-
-    // Add an item to the bill
-    public void addItem(Item item) {
-        this.items.add(item);
-        calculateTotal();
-    }
-
-    // Remove an item from the bill
-    public void removeItem(Item item) {
-        this.items.remove(item);
-        calculateTotal();
-    }
-
-    // Calculate total bill amount
-    private void calculateTotal() {
-        double total = 0.0;
-        for (Item item : items) {
-            total += item.getPrice() * item.getQuantity();
-        }
-        this.totalAmount = total;
-    }
-
-    @Override
-    public String toString() {
-        return "Bill [Bill ID=" + billId +
-               ", Customer=" + customer.getName() +
-               ", Date=" + date +
-               ", Total Amount=" + totalAmount +
-               ", Items Count=" + items.size() + "]";
     }
 }
 
