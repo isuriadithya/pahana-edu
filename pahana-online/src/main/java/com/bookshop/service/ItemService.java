@@ -6,8 +6,8 @@ import com.bookshop.dao.ItemDAO;
 import com.bookshop.model.Item;
 
 public class ItemService {
-	
-	private static ItemService instance;
+
+    private static volatile ItemService instance; // volatile for thread-safety
     private ItemDAO itemDAO;
 
     private ItemService() {
@@ -41,8 +41,7 @@ public class ItemService {
         return itemDAO.getItemById(id);
     }
 
-    public List<Item> getAllItems() throws SQLException {
+    public List<Item> getAllItems() {
         return itemDAO.getAllItems();
     }
-
 }
