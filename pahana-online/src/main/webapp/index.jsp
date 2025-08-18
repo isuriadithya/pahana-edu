@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Billing Management System</title>
+    <title>Login & Sign Up - Billing Management System</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
@@ -47,7 +47,7 @@
             50% { transform: scale(1.1) rotate(180deg); }
         }
 
-        .login-container {
+        .auth-container {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
             padding: 3rem;
@@ -60,6 +60,7 @@
             position: relative;
             overflow: hidden;
             animation: slideUp 0.8s ease-out;
+            min-height: 600px;
         }
 
         @keyframes slideUp {
@@ -73,7 +74,7 @@
             }
         }
 
-        .login-container::before {
+        .auth-container::before {
             content: '';
             position: absolute;
             top: 0;
@@ -90,20 +91,63 @@
             50% { background-position: 100% 50%; }
         }
 
-        .login-header {
-            text-align: center;
-            margin-bottom: 2.5rem;
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 2rem;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 15px;
+            padding: 0.5rem;
+            position: relative;
         }
 
-        .login-logo {
+        .tab-button {
+            flex: 1;
+            padding: 0.8rem 1rem;
+            background: transparent;
+            border: none;
+            color: #667eea;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .tab-button.active {
+            color: white;
+        }
+
+        .tab-slider {
+            position: absolute;
+            top: 0.5rem;
+            left: 0.5rem;
+            width: calc(50% - 0.5rem);
+            height: calc(100% - 1rem);
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+            z-index: 1;
+        }
+
+        .tab-slider.signup {
+            transform: translateX(100%);
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .auth-logo {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 80px;
-            height: 80px;
+            width: 70px;
+            height: 70px;
             background: linear-gradient(135deg, #667eea, #764ba2);
             border-radius: 50%;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
             box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
             animation: pulse 2s ease-in-out infinite alternate;
         }
@@ -113,13 +157,13 @@
             100% { transform: scale(1.05); }
         }
 
-        .login-logo i {
-            font-size: 2.5rem;
+        .auth-logo i {
+            font-size: 2rem;
             color: white;
         }
 
-        .login-title {
-            font-size: 2.2rem;
+        .auth-title {
+            font-size: 1.8rem;
             font-weight: 700;
             color: #333;
             margin-bottom: 0.5rem;
@@ -127,22 +171,60 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            transition: opacity 0.3s ease;
         }
 
-        .login-subtitle {
+        .auth-subtitle {
             color: #666;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 400;
+            transition: opacity 0.3s ease;
         }
 
-        .login-form {
+        .form-container {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-form {
             display: flex;
             flex-direction: column;
-            gap: 1.5rem;
+            gap: 1.2rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .auth-form.signup {
+            transform: translateX(-100%);
+            opacity: 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+        }
+
+        .auth-form.signup.active {
+            transform: translateX(0);
+            opacity: 1;
+            position: relative;
+        }
+
+        .auth-form.login.inactive {
+            transform: translateX(100%);
+            opacity: 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1rem;
         }
 
         .form-group {
             position: relative;
+            flex: 1;
         }
 
         .form-group i {
@@ -151,16 +233,16 @@
             top: 50%;
             transform: translateY(-50%);
             color: #667eea;
-            font-size: 1.1rem;
+            font-size: 1rem;
             z-index: 1;
         }
 
         .form-input {
             width: 100%;
-            padding: 1.2rem 1.2rem 1.2rem 3.5rem;
+            padding: 1rem 1rem 1rem 3.2rem;
             border: 2px solid rgba(102, 126, 234, 0.2);
-            border-radius: 15px;
-            font-size: 1rem;
+            border-radius: 12px;
+            font-size: 0.95rem;
             font-weight: 400;
             background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(10px);
@@ -180,15 +262,15 @@
             font-weight: 400;
         }
 
-        .login-button {
+        .auth-button {
             width: 100%;
-            padding: 1.2rem;
+            padding: 1.1rem;
             background: linear-gradient(135deg, #667eea, #764ba2);
             border: none;
             color: white;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 600;
-            border-radius: 15px;
+            border-radius: 12px;
             cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
@@ -196,7 +278,7 @@
             margin-top: 0.5rem;
         }
 
-        .login-button::before {
+        .auth-button::before {
             content: '';
             position: absolute;
             top: 0;
@@ -207,35 +289,35 @@
             transition: left 0.6s ease;
         }
 
-        .login-button:hover::before {
+        .auth-button:hover::before {
             left: 100%;
         }
 
-        .login-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+        .auth-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.4);
         }
 
-        .login-button:active {
+        .auth-button:active {
             transform: translateY(-1px);
         }
 
-        .login-button:disabled {
+        .auth-button:disabled {
             opacity: 0.7;
             cursor: not-allowed;
             transform: none;
         }
 
         /* Loading state */
-        .login-button.loading {
+        .auth-button.loading {
             pointer-events: none;
         }
 
-        .login-button.loading::after {
+        .auth-button.loading::after {
             content: '';
             position: absolute;
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             border: 2px solid transparent;
             border-top: 2px solid white;
             border-radius: 50%;
@@ -250,20 +332,29 @@
             100% { transform: translate(-50%, -50%) rotate(360deg); }
         }
 
-        .error-message {
-            background: rgba(244, 67, 54, 0.1);
-            color: #c62828;
-            padding: 1rem 1.5rem;
-            border-radius: 12px;
+        .error-message, .success-message {
+            padding: 0.8rem 1.2rem;
+            border-radius: 10px;
             margin-top: 1rem;
             text-align: center;
             font-weight: 500;
-            border: 1px solid rgba(244, 67, 54, 0.2);
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
             animation: shake 0.5s ease-in-out;
+        }
+
+        .error-message {
+            background: rgba(244, 67, 54, 0.1);
+            color: #c62828;
+            border: 1px solid rgba(244, 67, 54, 0.2);
+        }
+
+        .success-message {
+            background: rgba(76, 175, 80, 0.1);
+            color: #2e7d32;
+            border: 1px solid rgba(76, 175, 80, 0.2);
         }
 
         @keyframes shake {
@@ -272,18 +363,13 @@
             75% { transform: translateX(5px); }
         }
 
-        .error-message i {
-            font-size: 1.1rem;
-        }
-
-        .login-footer {
+        .auth-footer {
             text-align: center;
-            margin-top: 2rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            margin-top: 1.5rem;
+            padding-top: 1rem;
         }
 
-        .login-footer p {
+        .auth-footer p {
             color: #666;
             font-size: 0.9rem;
         }
@@ -300,111 +386,183 @@
             text-decoration: underline;
         }
 
+        .switch-form {
+            color: #667eea;
+            cursor: pointer;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            text-decoration: underline;
+        }
+
+        .switch-form:hover {
+            color: #764ba2;
+        }
+
         /* Responsive Design */
         @media (max-width: 480px) {
-            .login-container {
+            .auth-container {
                 padding: 2rem 1.5rem;
                 margin: 1rem;
+                min-height: 550px;
             }
 
-            .login-title {
-                font-size: 1.8rem;
-            }
-
-            .login-subtitle {
-                font-size: 1rem;
+            .auth-title {
+                font-size: 1.6rem;
             }
 
             .form-input {
-                padding: 1rem 1rem 1rem 3rem;
+                padding: 0.9rem 0.9rem 0.9rem 2.8rem;
+                font-size: 0.9rem;
             }
 
-            .login-button {
+            .auth-button {
                 padding: 1rem;
-                font-size: 1rem;
+                font-size: 0.95rem;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 1rem;
             }
         }
 
-        /* Success Animation */
-        .success-checkmark {
-            display: none;
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: #4CAF50;
-            position: relative;
-            margin: 0 auto 1rem;
+        /* Password strength indicator */
+        .password-strength {
+            margin-top: 0.5rem;
+            height: 4px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
         }
 
-        .success-checkmark.show {
-            display: block;
-            animation: successPulse 0.6s ease-in-out;
+        .password-strength-bar {
+            height: 100%;
+            width: 0;
+            transition: all 0.3s ease;
+            border-radius: 2px;
         }
 
-        .success-checkmark::after {
-            content: '✓';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: white;
-            font-size: 2.5rem;
-            font-weight: bold;
+        .password-strength-bar.weak {
+            width: 33%;
+            background: #f44336;
         }
 
-        @keyframes successPulse {
-            0% {
-                transform: scale(0);
-                opacity: 0;
-            }
-            50% {
-                transform: scale(1.1);
-            }
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
+        .password-strength-bar.medium {
+            width: 66%;
+            background: #ff9800;
+        }
+
+        .password-strength-bar.strong {
+            width: 100%;
+            background: #4caf50;
         }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <div class="login-header">
-            <div class="login-logo">
-                <i class="fas fa-calculator"></i>
-            </div>
-            <h1 class="login-title">Welcome Back</h1>
-            <p class="login-subtitle">Sign in to your billing management system</p>
+    <div class="auth-container">
+        <div class="auth-tabs">
+            <button class="tab-button active" id="loginTab">Sign In</button>
+            <button class="tab-button" id="signupTab">Sign Up</button>
+            <div class="tab-slider" id="tabSlider"></div>
         </div>
 
-        <div class="success-checkmark" id="successCheckmark"></div>
-
-        <form class="login-form" action="auth" method="post" id="loginForm">
-            <div class="form-group">
-                <i class="fas fa-user"></i>
-                <input type="text" name="username" class="form-input" placeholder="Enter your username" required>
+        <div class="auth-header">
+            <div class="auth-logo">
+                <i class="fas fa-calculator"></i>
             </div>
+            <h1 class="auth-title" id="authTitle">Welcome Back</h1>
+            <p class="auth-subtitle" id="authSubtitle">Sign in to your billing management system</p>
+        </div>
 
-            <div class="form-group">
-                <i class="fas fa-lock"></i>
-                <input type="password" name="password" class="form-input" placeholder="Enter your password" required>
-            </div>
+        <div class="form-container">
+            <!-- Login Form -->
+            <form class="auth-form login active" action="auth" method="post" id="loginForm">
+                <input type="hidden" name="action" value="login">
+                
+                <div class="form-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" name="username" class="form-input" placeholder="Enter your username" required>
+                </div>
 
-            <button type="submit" class="login-button" id="loginButton">
-                <span>Sign In</span>
-            </button>
+                <div class="form-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" name="password" class="form-input" placeholder="Enter your password" required>
+                </div>
 
-            <!-- Show error message if login fails -->
-            <% if (request.getAttribute("errorMessage") != null) { %>
-            <div class="error-message">
-                <i class="fas fa-exclamation-circle"></i>
-                <%= request.getAttribute("errorMessage") %>
-            </div>
-            <% } %>
-        </form>
+                <button type="submit" class="auth-button" id="loginButton">
+                    <span>Sign In</span>
+                </button>
 
-        <div class="login-footer">
-            <p>
+                <!-- Show error message if login fails -->
+                <% if (request.getAttribute("errorMessage") != null) { %>
+                <div class="error-message">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <%= request.getAttribute("errorMessage") %>
+                </div>
+                <% } %>
+            </form>
+
+            <!-- Sign Up Form -->
+            <form class="auth-form signup" action="auth" method="post" id="signupForm">
+                <input type="hidden" name="action" value="signup">
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" name="firstName" class="form-input" placeholder="First Name" required>
+                    </div>
+                    <div class="form-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" name="lastName" class="form-input" placeholder="Last Name" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" name="email" class="form-input" placeholder="Enter your email" required>
+                </div>
+
+                <div class="form-group">
+                    <i class="fas fa-user-circle"></i>
+                    <input type="text" name="username" class="form-input" placeholder="Choose a username" required>
+                </div>
+
+                <div class="form-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" name="password" class="form-input" placeholder="Create a password" required id="signupPassword">
+                    <div class="password-strength">
+                        <div class="password-strength-bar" id="passwordStrengthBar"></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" name="confirmPassword" class="form-input" placeholder="Confirm password" required>
+                </div>
+
+                <button type="submit" class="auth-button" id="signupButton">
+                    <span>Create Account</span>
+                </button>
+
+                <!-- Show success or error message for signup -->
+                <% if (request.getAttribute("signupMessage") != null) { %>
+                <div class="success-message">
+                    <i class="fas fa-check-circle"></i>
+                    <%= request.getAttribute("signupMessage") %>
+                </div>
+                <% } %>
+
+                <% if (request.getAttribute("signupError") != null) { %>
+                <div class="error-message">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <%= request.getAttribute("signupError") %>
+                </div>
+                <% } %>
+            </form>
+        </div>
+
+        <div class="auth-footer">
+            <p id="authFooterText">
                 Forgot your password? 
                 <a href="#" class="forgot-password">Reset here</a>
             </p>
@@ -412,34 +570,97 @@
     </div>
 
     <script>
+        // Tab switching functionality
+        const loginTab = document.getElementById('loginTab');
+        const signupTab = document.getElementById('signupTab');
+        const tabSlider = document.getElementById('tabSlider');
+        const loginForm = document.querySelector('.auth-form.login');
+        const signupForm = document.querySelector('.auth-form.signup');
+        const authTitle = document.getElementById('authTitle');
+        const authSubtitle = document.getElementById('authSubtitle');
+        const authFooterText = document.getElementById('authFooterText');
+
+        function switchToLogin() {
+            loginTab.classList.add('active');
+            signupTab.classList.remove('active');
+            tabSlider.classList.remove('signup');
+            
+            loginForm.classList.add('active');
+            loginForm.classList.remove('inactive');
+            signupForm.classList.remove('active');
+            signupForm.classList.add('signup');
+            
+            authTitle.textContent = 'Welcome Back';
+            authSubtitle.textContent = 'Sign in to your billing management system';
+            authFooterText.innerHTML = 'Forgot your password? <a href="#" class="forgot-password">Reset here</a>';
+        }
+
+        function switchToSignup() {
+            signupTab.classList.add('active');
+            loginTab.classList.remove('active');
+            tabSlider.classList.add('signup');
+            
+            signupForm.classList.add('active');
+            signupForm.classList.remove('signup');
+            loginForm.classList.remove('active');
+            loginForm.classList.add('inactive');
+            
+            authTitle.textContent = 'Create Account';
+            authSubtitle.textContent = 'Join our billing management system';
+            authFooterText.innerHTML = 'Already have an account? <span class="switch-form" onclick="switchToLogin()">Sign in here</span>';
+        }
+
+        loginTab.addEventListener('click', switchToLogin);
+        signupTab.addEventListener('click', switchToSignup);
+
+        // Form submission handling
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             const button = document.getElementById('loginButton');
             const buttonText = button.querySelector('span');
             
-            // Add loading state
             button.classList.add('loading');
             buttonText.style.opacity = '0';
+        });
+
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            const button = document.getElementById('signupButton');
+            const buttonText = button.querySelector('span');
+            const password = document.querySelector('input[name="password"]').value;
+            const confirmPassword = document.querySelector('input[name="confirmPassword"]').value;
             
-            // Simulate processing time (remove this in production)
-            setTimeout(() => {
-                // In real implementation, this would be handled by the server
-                // For demo purposes, we'll show success for any non-empty credentials
-                const username = document.querySelector('input[name="username"]').value;
-                const password = document.querySelector('input[name="password"]').value;
-                
-                if (username && password) {
-                    // Show success animation
-                    document.getElementById('successCheckmark').classList.add('show');
-                    
-                    // Redirect after animation
-                    setTimeout(() => {
-                        // This would normally be handled by the server redirect
-                        window.location.href = 'view/dashboard/dashboard.jsp';
-                    }, 1500);
-                    
-                    return false; // Prevent actual form submission for demo
-                }
-            }, 1000);
+            if (password !== confirmPassword) {
+                e.preventDefault();
+                alert('Passwords do not match!');
+                return;
+            }
+            
+            button.classList.add('loading');
+            buttonText.style.opacity = '0';
+        });
+
+        // Password strength indicator
+        const signupPassword = document.getElementById('signupPassword');
+        const passwordStrengthBar = document.getElementById('passwordStrengthBar');
+
+        function checkPasswordStrength(password) {
+            let score = 0;
+            if (password.length >= 8) score++;
+            if (/[A-Z]/.test(password)) score++;
+            if (/[0-9]/.test(password)) score++;
+            if (/[^A-Za-z0-9]/.test(password)) score++;
+            
+            passwordStrengthBar.className = 'password-strength-bar';
+            if (score === 1 || score === 2) {
+                passwordStrengthBar.classList.add('weak');
+            } else if (score === 3) {
+                passwordStrengthBar.classList.add('medium');
+            } else if (score >= 4) {
+                passwordStrengthBar.classList.add('strong');
+            }
+        }
+
+        signupPassword.addEventListener('input', function() {
+            checkPasswordStrength(this.value);
         });
 
         // Add floating label effect
@@ -455,14 +676,17 @@
             });
         });
 
-        // Optional: Restore button state on page reload or failed login
+        // Restore button state on page reload
         window.addEventListener('load', function () {
-            const button = document.getElementById('loginButton');
-            const buttonText = button.querySelector('span');
-            button.classList.remove('loading');
-            if (buttonText) {
-                buttonText.style.opacity = '1';
-            }
+            const loginButton = document.getElementById('loginButton');
+            const signupButton = document.getElementById('signupButton');
+            const loginButtonText = loginButton.querySelector('span');
+            const signupButtonText = signupButton.querySelector('span');
+            
+            loginButton.classList.remove('loading');
+            signupButton.classList.remove('loading');
+            if (loginButtonText) loginButtonText.style.opacity = '1';
+            if (signupButtonText) signupButtonText.style.opacity = '1';
         });
     </script>
 </body>

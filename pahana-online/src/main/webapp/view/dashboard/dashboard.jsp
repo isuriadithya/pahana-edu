@@ -92,7 +92,7 @@
             </ul>
         </div>
 
-        <div class="menu-card items-card" onclick="window.location='items.jsp'">
+        <div class="menu-card items-card" onclick="window.location='../item/items.jsp'">
             <i class="fas fa-boxes"></i>
             <h3>Manage Items</h3>
             <p>Comprehensive item and product management</p>

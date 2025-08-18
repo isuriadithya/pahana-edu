@@ -12,7 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customer Management - Billing System</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <style>
+   <style>
         * {
             margin: 0;
             padding: 0;
@@ -428,52 +428,31 @@
 </head>
 <body>
 <%
-    // Get current date
+    // Current date
     SimpleDateFormat sdf = new SimpleDateFormat("MMMM dd, yyyy");
     String currentDate = sdf.format(new Date());
 
-    // Get user from session
+    // Get user
     UserModel user = (UserModel) session.getAttribute("username");
     String username = (user != null) ? user.getUsername() : "Admin User";
 
-    // Mock customer data - replace with actual database calls
-    List<Map<String, String>> customers = new ArrayList<>();
-    
-    // Sample customers
-    Map<String, String> customer1 = new HashMap<>();
-    customer1.put("accountNumber", "1001");
-    customer1.put("name", "John Doe");
-    customer1.put("address", "123 Main St, City, State - 12345");
-    customer1.put("telephone", "+1 234 567 8900");
-    customer1.put("billAmount", "1250.75");
-    customers.add(customer1);
-
-    Map<String, String> customer2 = new HashMap<>();
-    customer2.put("accountNumber", "1002");
-    customer2.put("name", "Jane Smith");
-    customer2.put("address", "456 Oak Ave, Town, State - 67890");
-    customer2.put("telephone", "+1 234 567 8901");
-    customer2.put("billAmount", "850.50");
-    customers.add(customer2);
-
-    Map<String, String> customer3 = new HashMap<>();
-    customer3.put("accountNumber", "1003");
-    customer3.put("name", "Robert Johnson");
-    customer3.put("address", "789 Pine St, Village, State - 54321");
-    customer3.put("telephone", "+1 234 567 8902");
-    customer3.put("billAmount", "2100.25");
-    customers.add(customer3);
+    // ✅ Fetch customers from DB
+    CustomerDAO customerDAO = new CustomerDAO();
+    List<Customer> customers = customerDAO.getAllCustomers();
 %>
 
+    <!-- Header -->
     <header class="header">
         <div class="breadcrumb">
-            <a href="dashboard.jsp"><i class="fas fa-home"></i> Dashboard</a>
-            <i class="fas fa-chevron-right"></i>
+            <a href="/pahana-online/view/dashboard/dashboard.jsp">
+                <i class="fas fa-home"></i> Dashboard
+            </a>
             <span>Customer Management</span>
         </div>
         <h1><i class="fas fa-users"></i> Manage Customers</h1>
     </header>
 
+    <!-- Main -->
     <div class="container">
         <div class="action-bar">
             <div class="search-box">
@@ -490,194 +469,207 @@
             </div>
         </div>
 
+        <!-- Customer Cards -->
         <div class="customer-grid" id="customerGrid">
-            <% for (Map<String, String> customer : customers) { %>
-            <div class="customer-card" data-customer-id="<%= customer.get("accountNumber") %>">
+            <% if (customers != null && !customers.isEmpty()) {
+                   for (Customer c : customers) { %>
+            <div class="customer-card" data-customer-id="<%= c.getAccountNumber() %>" data-units-consumed="<%= c.getUnitsConsumed() %>">
+
                 <div class="customer-header">
                     <div style="display: flex; align-items: center; gap: 1rem;">
                         <div class="customer-avatar">
-                            <%= customer.get("name").substring(0, 1).toUpperCase() %>
+                            <%= c.getName().substring(0, 1).toUpperCase() %>
                         </div>
                         <div>
-                            <div class="customer-name"><%= customer.get("name") %></div>
-                            <div class="customer-id">ACC: <%= customer.get("accountNumber") %></div>
+                            <div class="customer-name"><%= c.getName() %></div>
+                            <div class="customer-id">ACC: <%= c.getAccountNumber() %></div>
                         </div>
                     </div>
                     <span class="status-badge status-active">
-                        ₹<%= customer.get("billAmount") %>
+                        ₹<%= c.getBillAmount() %>
                     </span>
                 </div>
                 
                 <div class="customer-details">
                     <div class="detail-item">
                         <i class="fas fa-credit-card"></i>
-                        <span>Account: <%= customer.get("accountNumber") %></span>
+                        <span>Account: <%= c.getAccountNumber() %></span>
                     </div>
                     <div class="detail-item">
                         <i class="fas fa-phone"></i>
-                        <span><%= customer.get("telephone") %></span>
+                        <span><%= c.getTelephone() %></span>
                     </div>
                     <div class="detail-item">
                         <i class="fas fa-map-marker-alt"></i>
-                        <span><%= customer.get("address") %></span>
+                        <span><%= c.getAddress() %></span>
                     </div>
                     <div class="detail-item">
                         <i class="fas fa-rupee-sign"></i>
-                        <span>Bill Amount: ₹<%= customer.get("billAmount") %></span>
+                        <span>Bill Amount: ₹<%= c.getBillAmount() %></span>
                     </div>
                 </div>
                 
                 <div class="customer-actions">
-                    <button class="btn btn-view btn-sm" onclick="viewCustomer('<%= customer.get("accountNumber") %>')">
-                        <i class="fas fa-eye"></i> View
-                    </button>
-                    <button class="btn btn-edit btn-sm" onclick="editCustomer('<%= customer.get("accountNumber") %>')">
-                        <i class="fas fa-edit"></i> Edit
-                    </button>
-                    <button class="btn btn-delete btn-sm" onclick="deleteCustomer('<%= customer.get("accountNumber") %>')">
-                        <i class="fas fa-trash"></i> Delete
-                    </button>
+                   <button class="btn btn-view btn-sm" onclick="openModal('view', <%= c.getAccountNumber() %>)">
+    				<i class="fas fa-eye"></i> View
+					</button>
+			<button class="btn btn-edit btn-sm" onclick="openModal('edit', <%= c.getAccountNumber() %>)">
+    		<i class="fas fa-edit"></i> Edit
+			</button>
+
+                    <a href="<%=request.getContextPath()%>/customer?action=delete&accountNumber=<%= c.getAccountNumber() %>" 
+   					class="btn btn-delete btn-sm" 
+   					onclick="return confirm('Delete customer <%= c.getName() %>?');">
+   				 <i class="fas fa-trash"></i> Delete
+				</a>
                 </div>
+            </div>
+            <%   }
+               } else { %>
+            <div class="empty-state">
+                <i class="fas fa-users"></i>
+                <h3>No Customers Found</h3>
+                <p>Start by adding your first customer to the system</p>
+                <button class="btn btn-primary" onclick="openAddModal()">
+                    <i class="fas fa-plus"></i> Add First Customer
+                </button>
             </div>
             <% } %>
         </div>
-
-        <% if (customers.isEmpty()) { %>
-        <div class="empty-state">
-            <i class="fas fa-users"></i>
-            <h3>No Customers Found</h3>
-            <p>Start by adding your first customer to the system</p>
-            <button class="btn btn-primary" onclick="openAddModal()">
-                <i class="fas fa-plus"></i> Add First Customer
-            </button>
-        </div>
-        <% } %>
     </div>
 
-    <!-- Add/Edit Customer Modal -->
-    <div id="customerModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title" id="modalTitle">Add New Customer</h2>
-                <button class="close-btn" onclick="closeModal()">&times;</button>
+   <!-- Customer Modal (Add/Edit/View) -->
+<div id="customerModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 class="modal-title" id="modalTitle">Customer</h2>
+            <button class="close-btn" onclick="closeModal()">&times;</button>
+        </div>
+        <form id="customerForm" method="post" action="/pahana-online/customer">
+            <input type="hidden" name="action" id="formAction" value="add">
+            <div class="form-grid" id="modalBody">
+                <!-- Dynamic content inserted here -->
             </div>
-            
-            <form id="customerForm">
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label class="form-label">Customer Name *</label>
-                        <input type="text" class="form-input" id="customerName" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Address *</label>
-                        <input type="email" class="form-input" id="customerEmail" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Phone Number *</label>
-                        <input type="tel" class="form-input" id="customerPhone" required>
-                    </div>
-                  
-                </div>
-                <div class="form-actions">
-                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save"></i> Save Customer
-                    </button>
-                </div>
-            </form>
-        </div>
+            <div class="form-actions" id="modalActions">
+                <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                <button type="submit" class="btn btn-primary" id="modalSubmitBtn">
+                    <i class="fas fa-save"></i> Save
+                </button>
+            </div>
+        </form>
     </div>
+</div>
 
-    <script>
-        // Modal functions
-        function openAddModal() {
-            document.getElementById('modalTitle').textContent = 'Add New Customer';
-            document.getElementById('customerForm').reset();
-            document.getElementById('customerModal').style.display = 'block';
-        }
+    
 
-        function closeModal() {
-            document.getElementById('customerModal').style.display = 'none';
-        }
+    <!-- JS -->
+   <script>
+function openModal(mode, accountNumber) {
+    const card = document.querySelector(`.customer-card[data-customer-id='${accountNumber}']`);
+    if (!card) return;
 
-        // Customer actions
-        function viewCustomer(customerId) {
-            alert('Viewing customer: ' + customerId);
-            // Implement view logic
-        }
+    const name = card.querySelector('.customer-name').textContent;
+    const accNum = card.querySelector('.customer-id').textContent.replace('ACC: ', '');
+    const phone = card.querySelector('.detail-item:nth-child(2) span').textContent;
+    const address = card.querySelector('.detail-item:nth-child(3) span').textContent;
+    const bill = card.querySelector('.detail-item:nth-child(4) span').textContent.replace('Bill Amount: ₹', '');
 
-        function editCustomer(customerId) {
-            document.getElementById('modalTitle').textContent = 'Edit Customer';
-            // Populate form with customer data
-            document.getElementById('customerModal').style.display = 'block';
-            // Implement edit logic
-        }
+    const modalTitle = document.getElementById('modalTitle');
+    const modalBody = document.getElementById('modalBody');
+    const formAction = document.getElementById('formAction');
+    const submitBtn = document.getElementById('modalSubmitBtn');
 
-        function deleteCustomer(customerId) {
-            if (confirm('Are you sure you want to delete this customer?')) {
-                alert('Deleting customer: ' + customerId);
-                // Implement delete logic
-            }
-        }
+    if (mode === 'view') {
+        modalTitle.textContent = 'View Customer';
+        formAction.value = '';
+        submitBtn.style.display = 'none'; // hide save button
+        modalBody.innerHTML = `
+            <div class="detail-item"><strong>Account Number:</strong> ${accNum}</div>
+            <div class="detail-item"><strong>Name:</strong> ${name}</div>
+            <div class="detail-item"><strong>Phone:</strong> ${phone}</div>
+            <div class="detail-item"><strong>Address:</strong> ${address}</div>
+            <div class="detail-item"><strong>Bill Amount:</strong> ₹${bill}</div>
+        `;
+    } else if (mode === 'edit') {
+        modalTitle.textContent = 'Edit Customer';
+        formAction.value = 'update';
+        submitBtn.style.display = 'inline-flex';
+        modalBody.innerHTML = `
+            <div class="form-group">
+                <label class="form-label">Account Number</label>
+                <input type="number" class="form-input" name="accountNumber" value="${accNum}" readonly>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Name</label>
+                <input type="text" class="form-input" name="name" value="${name}" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Phone</label>
+                <input type="tel" class="form-input" name="telephone" value="${phone}" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Address</label>
+                <input type="text" class="form-input" name="address" value="${address}" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Units Consumed</label>
+                <input type="number" class="form-input" name="unitsConsumed" value="${card.dataset.unitsConsumed}" required>
+            </div>
+        `;
+    }
 
-        function exportCustomers() {
-            alert('Exporting customer data...');
-            // Implement export logic
-        }
+    document.getElementById('customerModal').style.display = 'block';
+}
 
-        // Search functionality
-        document.getElementById('searchInput').addEventListener('input', function(e) {
-            const searchTerm = e.target.value.toLowerCase();
-            const customerCards = document.querySelectorAll('.customer-card');
-            
-            customerCards.forEach(card => {
-                const customerText = card.textContent.toLowerCase();
-                if (customerText.includes(searchTerm)) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        });
+function closeModal() {
+    document.getElementById('customerModal').style.display = 'none';
+}
 
-        // Form submission
-        document.getElementById('customerForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const formData = {
-                accountNumber: document.getElementById('accountNumber').value,
-                name: document.getElementById('customerName').value,
-                address: document.getElementById('customerAddress').value,
-                telephone: document.getElementById('customerTelephone').value,
-                billAmount: document.getElementById('customerBillAmount').value || 0
-            };
-            
-            console.log('Customer data:', formData);
-            alert('Customer saved successfully!');
-            closeModal();
-            
-            // Here you would typically send the data to your server
-            // location.reload(); // Reload to show new customer
-        });
+// Close modal by clicking outside
+window.addEventListener('click', function(e) {
+    const modal = document.getElementById('customerModal');
+    if (e.target === modal) {
+        closeModal();
+    }
+});
 
-        // Close modal when clicking outside
-        window.addEventListener('click', function(e) {
-            const modal = document.getElementById('customerModal');
-            if (e.target === modal) {
-                closeModal();
-            }
-        });
+function openAddModal() {
+    const modalTitle = document.getElementById('modalTitle');
+    const modalBody = document.getElementById('modalBody');
+    const formAction = document.getElementById('formAction');
+    const submitBtn = document.getElementById('modalSubmitBtn');
 
-        // Keyboard shortcuts
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeModal();
-            }
-            if (e.ctrlKey && e.key === 'n') {
-                e.preventDefault();
-                openAddModal();
-            }
-        });
-    </script>
+    modalTitle.textContent = 'Add New Customer';
+    formAction.value = 'add';  // form action for CustomerController
+    submitBtn.style.display = 'inline-flex'; // show Save button
+
+    modalBody.innerHTML = `
+        <div class="form-group">
+            <label class="form-label">Account Number *</label>
+            <input type="number" class="form-input" name="accountNumber" required>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Customer Name *</label>
+            <input type="text" class="form-input" name="name" required>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Address *</label>
+            <input type="text" class="form-input" name="address" required>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Phone Number *</label>
+            <input type="tel" class="form-input" name="telephone" required>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Units Consumed *</label>
+            <input type="number" class="form-input" name="unitsConsumed" required>
+        </div>
+    `;
+
+    document.getElementById('customerForm').reset();
+    document.getElementById('customerModal').style.display = 'block';
+}
+</script>
+
 </body>
 </html>
