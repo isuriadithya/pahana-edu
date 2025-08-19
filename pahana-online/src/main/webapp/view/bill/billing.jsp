@@ -156,15 +156,15 @@
                     </div>
                     <div class="summary-item">
                         <span class="summary-label">Subtotal:</span>
-                        <span class="summary-value">$0.00</span>
+                        <span class="summary-value">Rs0.00</span>
                     </div>
                     <div class="summary-item">
                         <span class="summary-label">Tax (10%):</span>
-                        <span class="summary-value">$0.00</span>
+                        <span class="summary-value">Rs0.00</span>
                     </div>
                     <div class="summary-item">
                         <span class="summary-label">Total Amount:</span>
-                        <span class="summary-value">$0.00</span>
+                        <span class="summary-value">Rs0.00</span>
                     </div>
                 </div>
                 
@@ -241,7 +241,7 @@ function updateBillDisplay() {
         <div class="bill-item">
             <div class="item-header">
                 <span class="item-name">${item.name}</span>
-                <span class="item-price">$${item.price.toFixed(2)}</span>
+                <span class="item-price">Rs.${item.price.toFixed(2)}</span>
             </div>
             <div class="item-description">${item.description}</div>
             <div class="item-controls">
@@ -250,7 +250,7 @@ function updateBillDisplay() {
                     <input type="number" value="${item.quantity}" onchange="updateQuantity(${i}, this.value)" 
                            class="quantity-input" min="1">
                 </div>
-                <div class="item-total">$${(item.price*item.quantity).toFixed(2)}</div>
+                <div class="item-total">Rs.${(item.price*item.quantity).toFixed(2)}</div>
                 <button onclick="removeItem(${i})" class="remove-btn">
                     <i class="fas fa-trash"></i> Remove
                 </button>
@@ -284,15 +284,15 @@ function updateBillSummary(){
         </div>
         <div class="summary-item">
             <span class="summary-label">Subtotal:</span>
-            <span class="summary-value">$${subtotal.toFixed(2)}</span>
+            <span class="summary-value">Rs. ${subtotal.toFixed(2)}</span>
         </div>
         <div class="summary-item">
             <span class="summary-label">Tax (10%):</span>
-            <span class="summary-value">$${tax.toFixed(2)}</span>
+            <span class="summary-value">Rs. ${tax.toFixed(2)}</span>
         </div>
         <div class="summary-item">
             <span class="summary-label">Total Amount:</span>
-            <span class="summary-value">$${total.toFixed(2)}</span>
+            <span class="summary-value">Rs. ${total.toFixed(2)}</span>
         </div>
     `;
 }
