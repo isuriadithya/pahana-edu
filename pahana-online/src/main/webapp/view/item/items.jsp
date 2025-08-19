@@ -551,7 +551,7 @@
                 <div class="item-details">
                     <div class="detail-item">
                         <i class="fas fa-tag"></i>
-                        <span>Price: ₹<%= String.format("%.2f", item.getPrice()) %></span>
+                        <span>Price: Rs <%= String.format("%.2f", item.getPrice()) %></span>
                     </div>
                     <div class="detail-item">
                         <i class="fas fa-boxes"></i>
@@ -563,7 +563,7 @@
                     </div>
                     <div class="detail-item">
                         <i class="fas fa-calculator"></i>
-                        <span>Total Value: ₹<%= String.format("%.2f", item.getPrice() * item.getQuantity()) %></span>
+                        <span>Total Value: Rs <%= String.format("%.2f", item.getPrice() * item.getQuantity()) %></span>
                     </div>
                 </div>
                 
@@ -641,9 +641,9 @@ function openModal(mode, itemId) {
             <div class="detail-item"><strong>Item ID:</strong> ${itemId}</div>
             <div class="detail-item"><strong>Name:</strong> ${name}</div>
             <div class="detail-item"><strong>Description:</strong> ${description}</div>
-            <div class="detail-item"><strong>Price:</strong> ₹${parseFloat(price).toFixed(2)}</div>
+            <div class="detail-item"><strong>Price:</strong> Rs ${parseFloat(price).toFixed(2)}</div>
             <div class="detail-item"><strong>Quantity:</strong> ${quantity} units</div>
-            <div class="detail-item"><strong>Total Value:</strong> ₹${(parseFloat(price) * parseInt(quantity)).toFixed(2)}</div>
+            <div class="detail-item"><strong>Total Value:</strong> Rs ${(parseFloat(price) * parseInt(quantity)).toFixed(2)}</div>
         `;
     } else if (mode === 'edit') {
         modalTitle.textContent = 'Edit Item';
@@ -663,7 +663,7 @@ function openModal(mode, itemId) {
                 <input type="text" class="form-input" name="description" value="${description}" required>
             </div>
             <div class="form-group">
-                <label class="form-label">Price (₹)</label>
+                <label class="form-label">Price (Rs)</label>
                 <input type="number" step="0.01" class="form-input" name="price" value="${price}" required>
             </div>
             <div class="form-group">
@@ -712,7 +712,7 @@ function openAddModal() {
             <input type="text" class="form-input" name="description" required>
         </div>
         <div class="form-group">
-            <label class="form-label">Price (₹) *</label>
+            <label class="form-label">Price (Rs) *</label>
             <input type="number" step="0.01" class="form-input" name="price" required>
         </div>
         <div class="form-group">

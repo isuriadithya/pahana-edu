@@ -486,7 +486,7 @@
                         </div>
                     </div>
                     <span class="status-badge status-active">
-                        ₹<%= c.getBillAmount() %>
+                        Rs <%= c.getBillAmount() %>
                     </span>
                 </div>
                 
@@ -505,7 +505,7 @@
                     </div>
                     <div class="detail-item">
                         <i class="fas fa-rupee-sign"></i>
-                        <span>Bill Amount: ₹<%= c.getBillAmount() %></span>
+                        <span>Bill Amount: Rs <%= c.getBillAmount() %></span>
                     </div>
                 </div>
                 
@@ -572,7 +572,7 @@ function openModal(mode, accountNumber) {
     const accNum = card.querySelector('.customer-id').textContent.replace('ACC: ', '');
     const phone = card.querySelector('.detail-item:nth-child(2) span').textContent;
     const address = card.querySelector('.detail-item:nth-child(3) span').textContent;
-    const bill = card.querySelector('.detail-item:nth-child(4) span').textContent.replace('Bill Amount: ₹', '');
+    const bill = card.querySelector('.detail-item:nth-child(4) span').textContent.replace('Bill Amount: Rs ', '');
 
     const modalTitle = document.getElementById('modalTitle');
     const modalBody = document.getElementById('modalBody');
@@ -588,7 +588,7 @@ function openModal(mode, accountNumber) {
             <div class="detail-item"><strong>Name:</strong> ${name}</div>
             <div class="detail-item"><strong>Phone:</strong> ${phone}</div>
             <div class="detail-item"><strong>Address:</strong> ${address}</div>
-            <div class="detail-item"><strong>Bill Amount:</strong> ₹${bill}</div>
+            <div class="detail-item"><strong>Bill Amount:</strong> Rs ${bill}</div>
         `;
     } else if (mode === 'edit') {
         modalTitle.textContent = 'Edit Customer';
